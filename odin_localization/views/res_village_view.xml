@@ -1,0 +1,65 @@
+<odoo>
+<data>
+
+  <!-- kelurahan list view -->
+  <record id="odin_village_view_tree" model="ir.ui.view">
+    <field name="name">res.village.tree</field>
+    <field name="model">res.village</field>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+      <tree string="Kelurahan">
+        <field name="name"/>
+        <field name="zipcode"/>
+        <field name="subdistrict_id"/>
+        <field name="description"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- layanan form view -->
+  <record id="odin_village_view_form" model="ir.ui.view">
+    <field name="name">res.village.form</field>
+    <field name="model">res.village</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+      <form string="Kelurahan">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="zipcode" string="kodepos"/>
+              <field name="subdistrict_id"/>
+            </group>
+            <group>
+              <field name="description"/>
+            </group>
+          </group>
+        </sheet>
+        <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <!-- Kelurahan action -->
+  <record model="ir.actions.act_window" id="odin_village_action_window">
+    <field name="name">Kelurahan</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">res.village</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <!-- contacts menu -->
+  <menuitem
+    id="menu_partner_odin_village"
+    action="odin_village_action_window"
+    parent="contacts.menu_localisation"
+    sequence="5"
+    groups="base.group_partner_manager"/>
+
+
+</data>
+</odoo>
