@@ -24,6 +24,8 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'views/res_state_view.xml',
+        'views/res_city_view.xml',
         'views/res_subdistrict_view.xml',
         'views/res_village_view.xml',
     ],

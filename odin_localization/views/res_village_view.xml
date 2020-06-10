@@ -57,7 +57,7 @@
     id="menu_partner_odin_village"
     action="odin_village_action_window"
     parent="contacts.menu_localisation"
-    sequence="5"
+    sequence="6"
     groups="base.group_partner_manager"/>
 
 

@@ -20,6 +20,5 @@ class ResSubdistrict(models.Model):
     name = fields.Char("Nama Kecamatan", required=True, tracking=True)
     description = fields.Text("Deskripsi", tracking=True)
     village_ids = fields.One2many(string="daftar Kelurahan", comodel_name="res.village", inverse_name="subdistrict_id")
-    # state_id = fields.Many2one(
-        # 'res.country.state', 'State', domain="[('country_id', '=', country_id)]")
+    city_id = fields.Many2one('res.city', string='Kota', required=True)
     

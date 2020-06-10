@@ -1,0 +1,77 @@
+<odoo>
+  <data>
+
+    <!-- kota tree -->
+    <record id="view_kota_tree" model="ir.ui.view">
+      <field name="name">kota.tree.view</field>
+      <field name="model">res.partner.kota</field>
+      <field name="type">tree</field>
+      <field name="priority" eval="8"/>
+      <field name="arch" type="xml">
+        <tree string="Kota">
+          <field name="name"/>
+          <field name="state_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- kota form -->
+    <record id="view_kota_form" model="ir.ui.view">
+      <field name="name">kota.form.view</field>
+      <field name="model">res.partner.kota</field>
+      <field name="type">form</field>
+      <field name="priority" eval="8"/>
+      <field name="arch" type="xml">
+        <form string="Kota">
+          <group colspan="4">
+            <field name="name"/>
+            <field name="state_id"/>
+          </group>
+        </form>
+      </field>
+    </record>
+
+    <!-- kota actions -->
+    <record id="act_open_kota_view" model="ir.actions.act_window">
+      <field name="name">Kota</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">res.partner.kota</field>
+      <!-- <field name="view_type">form</field> -->
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_kota_tree"/>
+    </record>
+
+    <!-- kota menu -->
+    <menuitem
+      id="menu_partner_kota"
+      action="act_open_kota_view"
+      parent="contacts.menu_localisation"
+      sequence="51"
+      groups="base.group_partner_manager"/>
+
+    <!-- partner form view -->
+    <record id="view_partner_kota_form" model="ir.ui.view">
+      <field name="name">view.partner.kota.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <field name="street2" position="after">
+          <field name="kelurahan" placeholder="Kelurahan"/>
+          <field name="kecamatan" placeholder="Kecamatan"/>
+        </field>
+        <field name="city" position="replace">
+          <field name="kota_id" placeholder="Kota" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+          <field name="city" placeholder="City" attrs="{'invisible': 1}"/>
+        </field>
+        <field name="vat" position="attributes">
+          <attribute name="string">NPWP</attribute>
+        </field>
+        <field name="vat" position="after">
+          <field name="alamat_npwp"/>
+          <field name="pkp"/>
+        </field>
+      </field>
+    </record>
+
+  </data>
+</odoo>

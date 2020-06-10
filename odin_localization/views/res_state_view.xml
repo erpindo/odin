@@ -1,0 +1,68 @@
+<odoo>
+<data>
+
+  <!-- Provinsi list view -->
+  <record id="odin_state_view_tree" model="ir.ui.view">
+    <!-- <field name="name">res.odin.state.tree</field> -->
+    <field name="model">res.country.state</field>
+    <field name="inherit_id" ref="base.view_country_state_tree"/>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+      <tree position="replace">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="country_id"/>
+        <field name="description"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Provinsi form view -->
+  <record id="odin_state_view_form" model="ir.ui.view">
+    <!-- <field name="name">res.odin.state.form</field> -->
+    <field name="model">res.country.state</field>
+    <field name="inherit_id" ref="base.view_country_state_form"/>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+      <form position="replace">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="country_id"/>
+            </group>
+            <group>
+              <field name="code"/>
+              <field name="description"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Daftar Kota" name="city_list">
+              <field name="city_ids">
+                <tree editable="bottom">
+                  <field name="name" string="Kota"/>
+                  <field name="description" string="Deskripsi"/>
+                </tree>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <!-- Provinsi action -->
+  <record model="ir.actions.act_window" id="odin_state_action_window">
+    <field name="name">Provinsi</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">res.state</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+</data>
+</odoo>
