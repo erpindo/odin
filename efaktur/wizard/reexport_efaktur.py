@@ -82,9 +82,9 @@ class ReexportEFaktur(models.TransientModel):
         for obj_inv in obj_invs:
             company_id = obj_inv.efaktur_id.company_id
             # If state open then print invoice line
-            if obj_inv.state in ('open', 'paid'):
+            if obj_inv.state in ('draft', 'posted'):
                 invoice_date = datetime.strptime(
-                    str(obj_inv.date_invoice), "%Y-%m-%d") or False
+                    str(obj_inv.invoice_date), "%Y-%m-%d") or False
 
                 invoice_npwp = nik = street = street2 = number_ref = ''
                 if not obj_inv.partner_id.npwp or self.npwp_o:
@@ -92,12 +92,12 @@ class ReexportEFaktur(models.TransientModel):
 
                 if obj_inv.replace_invoice_id:
                     number_ref = str(obj_inv.replace_invoice_id.number) + \
-                        " replaced by " + str(obj_inv.number) + " " + nik
+                        " replaced by " + str(obj_inv.name) + " " + nik
                 else:
-                    number_ref = str(obj_inv.number) + " " + nik
+                    number_ref = str(obj_inv.name) + " " + nik
 
                 if not invoice_date:
-                    raise UserError(_("Invoice %s no date", (obj_inv.number)))
+                    raise UserError(_("Invoice %s no date", (obj_inv.name)))
 
                 if not obj_inv.partner_id.street:
                     street = ''
@@ -142,9 +142,9 @@ class ReexportEFaktur(models.TransientModel):
                 eTax.fields.fg_pengganti.value = no_efaktur_unformat[2] or ''
                 eTax.fields.nomor_faktur.value = no_efaktur_unformat[3:] or ''
 
-                eTax.fields.masa_pajak.value = datetime.strptime(str(obj_inv.date_invoice),
+                eTax.fields.masa_pajak.value = datetime.strptime(str(obj_inv.invoice_date),
                                                                  "%Y-%m-%d").month or False
-                eTax.fields.tahun_pajak.value = datetime.strptime(str(obj_inv.date_invoice),
+                eTax.fields.tahun_pajak.value = datetime.strptime(str(obj_inv.invoice_date),
                                                                   "%Y-%m-%d").year or False
                 eTax.fields.tgl_faktur.value = '{0}/{1}/{2}'.format(invoice_date.day,
                                                                     invoice_date.month,
@@ -278,7 +278,7 @@ class ReexportEFaktur(models.TransientModel):
                     invoice_line_name = obj_inv_line.product_id.name or ''
                     invoice_line_quantity = obj_inv_line.quantity
 
-                    for tax in obj_inv_line.invoice_line_tax_ids:
+                    for tax in obj_inv_line.tax_ids:
                         if tax.amount > 0:
                             if tax.price_include:
                                 tax_status.update({'included': True})
@@ -290,7 +290,7 @@ class ReexportEFaktur(models.TransientModel):
                             tax_line += obj_inv_line.price_subtotal * \
                                 (tax.amount / 100.0)
 
-                    if not obj_inv_line.invoice_line_tax_ids:
+                    if not obj_inv_line.tax_ids:
                         invoice_line_unit_price = obj_inv_line.price_unit
 
                     invoice_line_total_price = invoice_line_unit_price * invoice_line_quantity
@@ -305,7 +305,7 @@ class ReexportEFaktur(models.TransientModel):
                             - obj_inv_line.price_subtotal
 
                     if obj_inv_line.price_subtotal < 0:
-                        for tax in obj_inv_line.invoice_line_tax_ids:
+                        for tax in obj_inv_line.tax_ids:
                             free_tax_line += (obj_inv_line.price_subtotal *
                                               (tax.amount / 100.0)) * -1.0
 
@@ -317,9 +317,9 @@ class ReexportEFaktur(models.TransientModel):
                             'bruto': invoice_line_total_price,
                             'subtotal': obj_inv_line.price_subtotal,
                             'discount': invoice_line_total_price - obj_inv_line.price_subtotal,
-                            'sale_line_ids': obj_inv_line.sale_line_ids.ids,
-                            'order_id': obj_inv_line.sale_line_ids[0].order_id if
-                            obj_inv_line.sale_line_ids else False,
+                            # 'sale_line_ids': obj_inv_line.sale_line_ids.ids,
+                            # 'order_id': obj_inv_line.sale_line_ids[0].order_id if
+                            # obj_inv_line.sale_line_ids else False,
                             'ppn': free_tax_line,
                             'product_id': obj_inv_line.product_id.id,
                         })
@@ -332,9 +332,9 @@ class ReexportEFaktur(models.TransientModel):
                             'bruto': invoice_line_total_price,
                             'subtotal': obj_inv_line.price_subtotal,
                             'discount': invoice_line_discount_m2m,
-                            'sale_line_ids': obj_inv_line.sale_line_ids.ids,
-                            'order_id': obj_inv_line.sale_line_ids[0].order_id if
-                            obj_inv_line.sale_line_ids else False,
+                            # 'sale_line_ids': obj_inv_line.sale_line_ids.ids,
+                            # 'order_id': obj_inv_line.sale_line_ids[0].order_id if
+                            # obj_inv_line.sale_line_ids else False,
                             'ppn': tax_line,
                             'product_id': obj_inv_line.product_id.id,
                         })
@@ -359,7 +359,7 @@ class ReexportEFaktur(models.TransientModel):
 
                             tax_line = 0
 
-                            for tax in obj_inv_line.invoice_line_tax_ids:
+                            for tax in obj_inv_line.tax_ids:
                                 if tax.amount > 0:
                                     tax_line += sale['subtotal'] * \
                                         (tax.amount / 100.0)
@@ -407,7 +407,7 @@ class ReexportEFaktur(models.TransientModel):
                         warning_mess = {
                             'title': _('Warning Notification!'),
                             'message': _('There are Invoice Line have more tax type \
-                                            include and exclude : %s', (obj_inv.number))
+                                            include and exclude : %s', (obj_inv.name))
                         }
                         return {'warning': warning_mess}
                 elif tax_status.get('excluded'):
@@ -494,7 +494,7 @@ class ReexportEFaktur(models.TransientModel):
             if obj_inv.state in ('open', 'paid'):
                 invoice_number = obj_inv.efaktur_id.name or ''
                 invoice_date = datetime.strptime(
-                    str(obj_inv.date_invoice), "%Y-%m-%d") or False
+                    str(obj_inv.invoice_date), "%Y-%m-%d") or False
                 if not invoice_date:
                     raise UserError(_("Invoice %s no date", (invoice_number)))
                 invoice_date_p = '{0}/{1}/{2}'.format(invoice_date.day,
