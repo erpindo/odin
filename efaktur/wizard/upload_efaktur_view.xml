@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="upload_efaktur_view" model="ir.ui.view">
+			<field name="name">upload.efaktur.wizard.view</field>
+			<field name="model">upload.efaktur.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Upload e-Faktur">
+					Are you sure want to set these e-Faktur as Upload Success ?
+					<footer>
+						<button string="Yes" name="upload_efaktur" type="object" class="oe_highlight"/>
+						<button string="Cancel" class="btn-default" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_upload_efaktur" model="ir.actions.act_window">
+				<field name="name">Upload Success</field>
+				<field name="type">ir.actions.act_window</field>
+				<field name="res_model">upload.efaktur.wizard</field>
+				<field name="view_mode">form</field>
+				<field name="view_id" ref="upload_efaktur_view"/>
+				<field name="context">{}</field>
+				<field name="target">new</field>
+				<field name="help">	Reexport E-Faktur </field>
+				<field name="binding_model_id" ref="efaktur.model_efaktur"/>
+				<field name="binding_view_types">list</field>
+		</record>
+
+
+		<!-- <record id="action_upload_efaktur" model="ir.actions.act_window">
+			<field name="name">Upload Success</field>
+			<field name="res_model">upload.efaktur.wizard</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+		<menuitem id="upload_efaktur" name="Upload Success"
+		parent="account.menu_finance_receivables" action="action_upload_efaktur"/> -->
+
+	</data>
+</odoo>
