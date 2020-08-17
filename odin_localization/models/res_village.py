@@ -21,3 +21,5 @@ class ResVillage(models.Model):
     zipcode = fields.Char("Kodepos", tracking=True)
     description = fields.Text("Deskripsi", tracking=True)
     subdistrict_id = fields.Many2one('res.subdistrict', string='Kecamatan', required=True)
+    kode_id = fields.Char(
+        "No ID")

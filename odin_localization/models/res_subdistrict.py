@@ -21,4 +21,6 @@ class ResSubdistrict(models.Model):
     description = fields.Text("Deskripsi", tracking=True)
     village_ids = fields.One2many(string="daftar Kelurahan", comodel_name="res.village", inverse_name="subdistrict_id")
     city_id = fields.Many2one('res.city', string='Kota', required=True)
+    kode_id = fields.Char(
+        "No ID")
     

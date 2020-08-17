@@ -10,28 +10,18 @@ _logger = logging.getLogger(__name__)
 
 ################################################################################
 
-
 class ResCity(models.Model):
-    _name = 'res.city'
-    _description = 'Kota'
-    _order = 'name'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-
-    name = fields.Char(
-        "Nama Kota", 
-        required=True, 
-        tracking=True)
+    _inherit = 'res.city'
 
     description = fields.Text(
         "Deskripsi", 
         tracking=True)
 
+    kode_id = fields.Char(
+        "No ID")
+        
     subdistrict_ids = fields.One2many(
         string="daftar Kecamatan", 
         comodel_name="res.subdistrict", 
         inverse_name="city_id")
-
-    state_id = fields.Many2one(
-        'res.state', 
-        'State')
     

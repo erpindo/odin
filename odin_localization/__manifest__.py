@@ -19,6 +19,7 @@
         'base',
         'mail',
         'contacts',
+        'base_address_city',
         'base_address_extended'
         ],
 
@@ -32,5 +33,4 @@
     'installable': True,
     'application': True,
     'auto_install': False,
-    'sequence': 1,
 }

@@ -4,8 +4,7 @@
 from odoo import fields, models
 
 class ResState(models.Model):
-    _description = 'Provinsi'
-    _inherits = ['mail.thread', 'mail.activity.mixin','res.country.state']
+    _inherit = 'res.country.state'
 
     description = fields.Text(
         "Deskripsi", 
@@ -17,6 +16,9 @@ class ResState(models.Model):
         tracking=True)
 
     city_ids = fields.One2many(
-        string="daftar Kota", 
+        string="Cities", 
         comodel_name="res.city", 
         inverse_name="state_id")
+
+    kode_id = fields.Char(
+        "No ID")
