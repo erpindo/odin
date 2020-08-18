@@ -29,6 +29,7 @@
         'views/res_city_view.xml',
         'views/res_subdistrict_view.xml',
         'views/res_village_view.xml',
+        'views/odin_config_settings_views.xml',
     ],
     'installable': True,
     'application': True,

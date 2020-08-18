@@ -22,3 +22,5 @@ class ResState(models.Model):
 
     kode_id = fields.Char(
         "No ID")
+
+    code = fields.Char(required=False)
