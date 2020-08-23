@@ -10,6 +10,7 @@
       <tree string="Kecamatan">
         <field name="name"/>
         <field name="description"/>
+        <field name="city_id"/>
       </tree>
     </field>
   </record>

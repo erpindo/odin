@@ -11,6 +11,9 @@
       <xpath expr="//field[@name='zipcode']" position="replace">
         <field name="description"/>
       </xpath>
+      <xpath expr="//field[@name='state_id']" position="replace">
+        <field name="state_id" string="Provinsi" />
+      </xpath>
     </field>
   </record>
 
