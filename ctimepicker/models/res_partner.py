@@ -4,5 +4,3 @@ class Users(models.Model):
     _inherit = "res.partner"
 
     timepicker = fields.Char()
-    timepicker2 = fields.Date()
-    

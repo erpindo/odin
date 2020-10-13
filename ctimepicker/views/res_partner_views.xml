@@ -7,7 +7,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="timepicker" string="Time-Picker" widget="ctimepicker"/>
-                    <field name="timepicker2" string="Time-Picker2"/>
                 </xpath>
             </field>
         </record>
