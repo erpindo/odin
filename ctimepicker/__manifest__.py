@@ -19,6 +19,5 @@
 
     'data': [
         'views/assets.xml',
-        'views/res_partner_views.xml',
     ],
 }
